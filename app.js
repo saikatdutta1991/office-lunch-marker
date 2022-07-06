@@ -19,6 +19,13 @@ app.message("hello", async ({ message, say }) => {
   await say(`Hey there <@${message.user}>!`);
 });
 
+app.command("/echo", async ({ command, ack, respond }) => {
+  console.log("/echo command triggered");
+  console.log(command.text.split(" "), "message");
+  await ack();
+  await respond(`${command.text}`);
+});
+
 (async () => {
   await app.start();
   console.log("⚡️ Bolt app is running!");
