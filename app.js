@@ -4,6 +4,7 @@ const { FileInstallationStore } = require("@slack/oauth");
 
 const SLACK_APP_TOKEN = process.env.SLACK_APP_TOKEN;
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
+const SLACK_USER_TOKEN = process.env.SLACK_USER_TOKEN;
 const SLACK_SIGNING_SECRET = process.env.SLACK_SIGNING_SECRET;
 const SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID;
 const SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET;
@@ -25,10 +26,20 @@ const app = new App({
   port: PORT || 3000,
 });
 
-app.message("hello", async ({ message, say }) => {
-  console.log(`hello message received`);
-  console.log(JSON.stringify(message), "message");
-  await say(`Hey there <@${message.user}>!`);
+app.message("react", async ({ message, client }) => {
+  console.log(`react message received`);
+  console.log(JSON.stringify({ message, client }), "react request");
+  await client.reactions.add({
+    name: "thumbsup",
+    timestamp: message.event_ts,
+    channel: message.channel,
+    token: SLACK_USER_TOKEN,
+  });
+  // app.client.chat.postMessage({
+  //   token: SLACK_USER_TOKEN,
+  //   channel: message.channel,
+  //   text: "Reaction",
+  // });
 });
 
 app.command("/echo", async ({ command, ack, respond }) => {
