@@ -13,36 +13,52 @@ const PORT = process.env.PORT;
 
 const installationStore = new FileInstallationStore();
 
-const app = new App({
-  // token: SLACK_BOT_TOKEN,
+const botApp = new App({
+  token: SLACK_BOT_TOKEN,
+  signingSecret: SLACK_SIGNING_SECRET,
+  appToken: SLACK_APP_TOKEN,
+  clientId: SLACK_CLIENT_ID,
+  clientSecret: SLACK_CLIENT_SECRET,
+  socketMode: true,
+  port: PORT || 3000,
+});
+
+const authorizedApp = new App({
   signingSecret: SLACK_SIGNING_SECRET,
   appToken: SLACK_APP_TOKEN,
   clientId: SLACK_CLIENT_ID,
   clientSecret: SLACK_CLIENT_SECRET,
   stateSecret: SLACK_STATE_SECRET,
-  scopes: ["channels:history", "chat:write", "commands"],
+  scopes: ["channels:history", "chat:write", "commands", "reactions:write"],
   installationStore,
   socketMode: true,
   port: PORT || 3000,
+  installerOptions: {
+    userScopes: ["channels:history", "chat:write", "reactions:write"],
+  },
 });
 
-app.message("react", async ({ message, client }) => {
+botApp.message("react", async ({ message, client }) => {
   console.log(`react message received`);
-  console.log(JSON.stringify({ message, client }), "react request");
+  console.log(JSON.stringify({ message }), "react request");
   await client.reactions.add({
-    name: "thumbsup",
+    name: "bento",
     timestamp: message.event_ts,
     channel: message.channel,
     token: SLACK_USER_TOKEN,
   });
+
   // app.client.chat.postMessage({
   //   token: SLACK_USER_TOKEN,
   //   channel: message.channel,
   //   text: "Reaction",
+  //   username: "",
+  //   as_user: true,
   // });
 });
 
-app.command("/echo", async ({ command, ack, respond }) => {
+botApp.command("/echo", async ({ command, ack, respond }) => {
+  console.log("/echo ");
   if (command.text) {
     console.log(command.text.split(" "), "message");
     await ack();
@@ -51,6 +67,7 @@ app.command("/echo", async ({ command, ack, respond }) => {
 });
 
 (async () => {
-  await app.start();
+  await botApp.start();
+  await authorizedApp.start();
   console.log("⚡️ Bolt app is running!");
 })();
