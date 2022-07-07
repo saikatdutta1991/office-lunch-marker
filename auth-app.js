@@ -13,7 +13,7 @@ const app = new App({
   scopes: ["channels:history", "chat:write", "commands", "reactions:write"],
   installationStore,
   socketMode: false,
-  port: config.slack.port,
+  port: config.port,
   installerOptions: {
     userScopes: ["channels:history", "chat:write", "reactions:write"],
   },
