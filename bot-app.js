@@ -9,7 +9,6 @@ const app = new App({
   clientId: config.slack.clientId,
   clientSecret: config.slack.clientSecret,
   socketMode: true,
-  port: config.port,
 });
 
 app.command("/auto-opt-me-in", async ({ command, ack, respond }) => {
@@ -29,6 +28,22 @@ app.command("/auto-opt-me-in", async ({ command, ack, respond }) => {
   } else {
     await respond(`You have already opted in for office lunch`);
   }
+});
+
+app.message(/(lunch at office)/, async ({ message, client }) => {
+  const installations = await installationStore.fetchInstallation({
+    teamId: message.team,
+  });
+
+  const promises = installations.map((installation) =>
+    client.reactions.add({
+      name: "bento",
+      timestamp: message.event_ts,
+      channel: message.channel,
+      token: installation.user.token,
+    })
+  );
+  await Promise.all(promises);
 });
 
 module.exports = app;
