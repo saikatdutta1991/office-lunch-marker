@@ -47,4 +47,9 @@ app.message(/(lunch at office)/, async ({ message, client }) => {
   await Promise.all(promises);
 });
 
+app.message("hello", async ({ message, say }) => {
+  console.log(`hello message received`);
+  await say(`Hey there <@${message.user}>!`);
+});
+
 module.exports = app;
