@@ -3,7 +3,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 const config = {
-  port: process.env.PORT | "3000",
+  port: process.env.PORT || 3000,
   redisUrl: process.env.REDIS_URL,
   baseUrl: process.env.BASE_URL,
   slack: {
