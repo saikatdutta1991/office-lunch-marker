@@ -31,6 +31,7 @@ app.command("/auto-opt-me-in", async ({ command, ack, respond }) => {
 });
 
 app.message(/(lunch at office)/, async ({ message, client }) => {
+  console.log("Lunch at office message triggered", JSON.stringify(message));
   const installations = await installationStore.fetchInstallation({
     teamId: message.team,
   });
