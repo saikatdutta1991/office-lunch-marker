@@ -62,7 +62,7 @@ app.command("/auto-opt-me-out", async ({ command, ack, respond }) => {
     userId,
   });
 
-  if (!installation) {
+  if (installation) {
     await installationStore.deleteInstallation({
       teamId,
       userId,
