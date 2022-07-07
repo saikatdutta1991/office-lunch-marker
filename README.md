@@ -1,5 +1,5 @@
 # Office Lunch Marker Slack App
-Listens to `lunch at office` phrase in message and add `bento` reaction on that on behalf of authorized users.
+Listens to `lunch at office` phrase in message and adds :bento: ( bento ) reaction on that on behalf of authorized users.
 
 ## To authorize yourself
 Type in the command `/auto-opt-me-in` ( in bangalore chanel where the app is added) 
