@@ -17,10 +17,18 @@ app.command("/auto-opt-me-in", async ({ command, ack, respond }) => {
   await ack();
   const teamId = command.team_id;
   const userId = command.user_id;
-  installationStore
-    .fetchInstallation({ teamId, userId })
-    .then((data) => console.log(data, "data"));
-  await respond(`Thanks`);
+  const installation = await installationStore.fetchInstallation({
+    teamId,
+    userId,
+  });
+
+  if (!installation) {
+    const installationUrl = new URL("/slack/install", config.baseUrl);
+    console.log(installationUrl.toString());
+    await respond(`Autorize yourself here: ${installationUrl.toString()}`);
+  } else {
+    await respond(`You have already opted in for office lunch`);
+  }
 });
 
 module.exports = app;

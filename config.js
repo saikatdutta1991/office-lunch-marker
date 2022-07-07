@@ -1,6 +1,7 @@
 const config = {
   port: process.env.PORT | "3000",
   redisUrl: process.env.REDIS_URL,
+  baseUrl: process.env.BASE_URL,
   slack: {
     appToken: process.env.SLACK_APP_TOKEN,
     botToken: process.env.SLACK_BOT_TOKEN,
