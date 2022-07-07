@@ -52,4 +52,25 @@ app.message("hello", async ({ message, say }) => {
   await say(`Hey there <@${message.user}>!`);
 });
 
+app.command("/auto-opt-me-out", async ({ command, ack, respond }) => {
+  console.log(command, "/auto-opt-me-out");
+  await ack();
+  const teamId = command.team_id;
+  const userId = command.user_id;
+  const installation = await installationStore.fetchInstallation({
+    teamId,
+    userId,
+  });
+
+  if (!installation) {
+    await installationStore.deleteInstallation({
+      teamId,
+      userId,
+    });
+    await respond(`You opted out from office lunch`);
+  } else {
+    await respond(`You haven't opted in for office lunch yet`);
+  }
+});
+
 module.exports = app;
