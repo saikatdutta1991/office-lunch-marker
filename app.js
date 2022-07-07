@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const botApp = require("./bot-app");
 const authApp = require("./auth-app");
 
