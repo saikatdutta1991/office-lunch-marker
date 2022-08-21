@@ -46,6 +46,9 @@ app.message(/(Reminder:).*(lunch at office).*/, async ({ message, client }) => {
   const isUserInChannel = (user) => channelMembers.includes(user.id);
   const usersToMarkLunch = users.filter(isUserInChannel);
 
+  const userIdsToMarkLunch = usersToMarkLunch.map((u) => u.id);
+  console.log(userIdsToMarkLunch, "usersToMarkLunch");
+
   const promises = usersToMarkLunch.map((user) =>
     client.reactions.add({
       name: "bento",
