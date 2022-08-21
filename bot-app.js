@@ -30,18 +30,28 @@ app.command("/auto-opt-me-in", async ({ command, ack, respond }) => {
   }
 });
 
-app.message(/(lunch at office)/, async ({ message, client }) => {
+app.message(/(Reminder:).*(lunch at office).*/, async ({ message, client }) => {
   console.log("Lunch at office message triggered", JSON.stringify(message));
   const installations = await installationStore.fetchInstallation({
     teamId: message.team,
   });
 
-  const promises = installations.map((installation) =>
+  const { members: channelMembers } = await client.conversations.members({
+    token: config.slack.botToken,
+    channel: message.channel,
+  });
+  console.log(channelMembers, "channelMembers");
+
+  const users = installations.map((i) => i.user);
+  const isUserInChannel = (user) => channelMembers.includes(user.id);
+  const usersToMarkLunch = users.filter(isUserInChannel);
+
+  const promises = usersToMarkLunch.map((user) =>
     client.reactions.add({
       name: "bento",
       timestamp: message.event_ts,
       channel: message.channel,
-      token: installation.user.token,
+      token: user.token,
     })
   );
   await Promise.all(promises);

@@ -16,7 +16,7 @@ Type in the command `/auto-opt-me-in` ( in bangalore channel where the app is ad
 - Enable socket mode
 - Create 2 commands: `/auto-opt-me-in` `/auto-opt-me-out`
 - Add redirect url for OAuth `{your-domain}/slack/oauth_redirect`
-- Add bot token scopes [`channels:history`, `chat:write`, `commands`, `reactions:write`]
+- Add bot token scopes [`channels:history`, `chat:write`, `commands`, `reactions:write`, `channels:read`]
 - Add user token scopes [`channels:history`, `chat:write`, `reactions:write`]
 - Enable event subscription
 - Subscribe to bot events [`message.channels`]
